@@ -5,10 +5,10 @@ namespace BookStore.Services.Interfaces
 {
     public interface IBookService
     {
-        Task<ICollection<BookResponseDto>> GetAsync();
-        Task<BookResponseDto> GetAsync(int id);
-        Task<int> AddAsync(BookRequestDto request);
-        Task<bool> UpdateAsync(int id, BookRequestDto request);
-        Task<bool> DeleteAsync(int id);
+        Task<BaseResponseGeneric<ICollection<BookResponseDto>>> GetAsync();
+        Task<BaseResponseGeneric<BookResponseDto>> GetAsync(int id);
+        Task<BaseResponseGeneric<int>> AddAsync(BookRequestDto request);
+        Task<BaseResponse> UpdateAsync(int id, BookRequestDto request);
+        Task<BaseResponse> DeleteAsync(int id);
     }
 }

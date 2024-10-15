@@ -20,78 +20,88 @@ namespace BookStore.Services.Implementations
             this.logger = logger;
             this.mapper = mapper;
         }
-        public async Task<ICollection<BookResponseDto>> GetAsync()
+
+        public async Task<BaseResponseGeneric<ICollection<BookResponseDto>>> GetAsync()
         {
-            var response = new List<BookResponseDto>();
+            var response = new BaseResponseGeneric<ICollection<BookResponseDto>>();
             try
             {
                 logger.LogInformation("Obteniendo todos los generos...");
-                response = mapper.Map<List<BookResponseDto>>(await repository.GetAsync());
+                response.Data = mapper.Map<List<BookResponseDto>>(await repository.GetAsync());
+                response.Success = true;
             }
             catch (Exception ex)
-            {                
+            {
+                response.ErrorMessage = "Ocurrió un error al obtener la información.";
                 logger.LogError(ex, ex.Message);
             }
             return response;
         }
 
-        public async Task<BookResponseDto> GetAsync(int id)
+        public async Task<BaseResponseGeneric<BookResponseDto>> GetAsync(int id)
         {
-            var response = new BookResponseDto();
+            var response = new BaseResponseGeneric<BookResponseDto>();
             try
             {
-                response = mapper.Map<BookResponseDto>(await repository.GetAsync(id));                
+                response.Data = mapper.Map<BookResponseDto>(await repository.GetAsync(id));
+                response.Success = response.Data != null;
             }
             catch (Exception ex)
             {
+                response.ErrorMessage = "Ocurrió un error al obtener la información.";
                 logger.LogError(ex, ex.Message);
             }
             return response;
         }
-        public async Task<int> AddAsync(BookRequestDto request)
+        public async Task<BaseResponseGeneric<int>> AddAsync(BookRequestDto request)
         {
-            var response = new int();
+            var response = new BaseResponseGeneric<int>();
             try
             {
-                response = await repository.AddAsync(mapper.Map<Book>(request));
+                response.Data = await repository.AddAsync(mapper.Map<Book>(request));
+                response.Success = true;
             }
             catch (Exception ex)
             {
+                response.ErrorMessage = "Ocurrió un error al añadir la información.";
                 logger.LogError(ex, ex.Message);
             }
             return response;
         }
-        public async Task<bool> UpdateAsync(int id, BookRequestDto request)
+        public async Task<BaseResponse> UpdateAsync(int id, BookRequestDto request)
         {
-            var response = false;
+            var response = new BaseResponse();
             try
             {
                 var entity = await repository.GetAsync(id);
                 if (entity is null)
                 {
+                    response.ErrorMessage = "No se encontró el registro.";
                     return response;
                 }
 
                 mapper.Map(request, entity);
                 await repository.UpdateAsync();
-                response = true;
+                response.Success = true;
             }
             catch (Exception ex)
             {
+                response.ErrorMessage = "Ocurrió un error al actualizar la información.";
                 logger.LogError(ex, ex.Message);
             }
             return response;
         }
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<BaseResponse> DeleteAsync(int id)
         {
-            var response = false;
+            var response = new BaseResponse();
             try
             {
                 await repository.DeleteAsync(id);
-                response = true;
+                response.Success = true;
             }
             catch (Exception ex)
             {
+                response.ErrorMessage = "Ocurrió un error al eliminar la información.";
                 logger.LogError(ex, ex.Message);
             }
             return response;

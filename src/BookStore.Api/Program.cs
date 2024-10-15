@@ -1,9 +1,11 @@
+using BookStore.Dto.Responses;
 using BookStore.Persistence;
 using BookStore.Repository.Implementations;
 using BookStore.Repository.Interfaces;
 using BookStore.Services.Implementations;
 using BookStore.Services.Interfaces;
 using BookStore.Services.Profiles;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,25 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddControllers();
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState.Values
+            .SelectMany(v => v.Errors)
+            .Select(e => e.ErrorMessage)
+            .ToList();
+
+        var response = new BaseResponse
+        {
+            Success = false,
+            ErrorMessage = string.Join("; ", errors) // Une los mensajes de error en un solo string.
+        };
+
+        return new BadRequestObjectResult(response);
+    };
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
