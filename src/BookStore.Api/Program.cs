@@ -39,9 +39,20 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
+if (app.Environment.IsDevelopment() || app.Environment.EnvironmentName.Equals("Docker"))//Sólo en ambiente development o docker
+{
+    await ApplyMigrationsAndSeedDataAsync(app);//migraciones automáticas
+}
 app.Run();
+static async Task ApplyMigrationsAndSeedDataAsync(WebApplication app)
+{
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    if (dbContext.Database.GetPendingMigrations().Any()) //Sólo cuando haya migraciones pendientes
+    {
+        await dbContext.Database.MigrateAsync();
+    }
+}
