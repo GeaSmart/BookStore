@@ -16,6 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BookStore.Persistence\BookStore.Persistence.csproj" />
+    <ProjectReference Include="..\BookStore.Repository\BookStore.Repository.csproj" />
+    <ProjectReference Include="..\BookStore.Services\BookStore.Services.csproj" />
   </ItemGroup>
 
 </Project>
