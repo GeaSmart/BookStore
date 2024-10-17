@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\BookStore.Persistence\BookStore.Persistence.csproj" />
+    <ProjectReference Include="..\BookStore.Persistence\BookStore.Persistence.csproj" />
     <ProjectReference Include="..\BookStore.Entities\BookStore.Entities.csproj" />
   </ItemGroup>
 

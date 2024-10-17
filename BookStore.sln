@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.Dto", "src\BookSt
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DCA8EE8F-5BFD-46E0-90AF-37FE6776E223}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.Persistence", "BookStore.Persistence\BookStore.Persistence.csproj", "{C0536CF6-D5C2-4A25-870C-7868E7CF81B3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStore.Persistence", "src\BookStore.Persistence\BookStore.Persistence.csproj", "{C0536CF6-D5C2-4A25-870C-7868E7CF81B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
